@@ -2,6 +2,8 @@ package it.polito.tdp.corsi;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.corsi.model.Corso;
@@ -41,6 +43,29 @@ public class GestoreCorsiController {
     @FXML
     void doCalcolaStat(ActionEvent event) {
 
+    	txtResult.clear();
+    	
+        int periodo;
+    	
+    	//Controllo degli errori sul formato
+    	try {
+    	  periodo= Integer.parseInt(txtPeriodo.getText());
+    	} catch(NumberFormatException e) {
+    		txtResult.appendText("Devi inserire un periodo (1 o 2)");
+    		return;
+    	}
+    	if(periodo !=1 && periodo!=2) {
+    		txtResult.appendText("Devi inserire un periodo (1 o 2)");
+    		return;
+    	}
+    	
+    	//metodo
+    	Map<Corso,Integer> mappa = model.getIscrittiCorsi(periodo);
+    	
+    	for (Entry<Corso,Integer> entry : mappa.entrySet()) {
+    		txtResult.appendText(entry.getKey().toString()+", Numero Iscritti: "+entry.getValue()+"\n");
+    	}
+    	
     }
 
     @FXML
